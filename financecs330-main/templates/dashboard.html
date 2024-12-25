@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Finance Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../static/style.css">
+    
+</head>
+<body class = dashboard>
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">Finance Tracker Dashboard</h1>
+                <h2 class="subtitle">Track your finances and reach your goals</h2>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="buttons">
+               
+                    <a href="/add-transaction" class="button is-success is-light">Add Transaction</a>
+                    <a href="/set-goal" class="button is-link is-light">Set Goal</a>
+                    <a href="{{ url_for('goals_viewer') }}" class="button is-info is-light">View Goals</a>
+                    <a href="{{ url_for('logout') }}" class="button is-danger">Logout</a>
+                    <a href="/news" class="button is-primary is-light" style="border-radius: 8px;">View Finance News</a>
+            </div>
+            <h2 class="title">Your Transactions</h2>
+            {% if transactions %}
+                <table class="table is-fullwidth is-striped">
+                    <thead>
+                        <tr>
+                            <th>Amount</th>
+                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transaction in transactions %}
+                        <tr>
+                            <td>
+                                ${{ "{:,.2f}".format(transaction.amount) }}
+                            </td>
+                            <td>{{ transaction.type.capitalize() }}</td>
+                            <td>{{ transaction.category }}</td>
+                            <td>{{ transaction.date.strftime('%Y-%m-%d') }}</td>
+                            <td>{{ transaction.note }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No transactions found.</p>
+            {% endif %}
+            <h2 class="title has-text-centered">Transaction Overview</h2>
+            <div class="is-flex is-justify-content-center">
+                <div class="box">
+                    <canvas id="transactionChart" style="max-width: 300px;"></canvas>
+                    <p class="has-text-centered current-balance">
+                        Current Balance: ${{ "{:,.2f}".format(current_balance) }}
+                    </p>
+                </div>
+    </section>
+    <script>
+        const incomeData = {{ income_data | tojson }};
+        const expenseData = {{ expense_data | tojson }};
+        const totalIncome = incomeData.reduce((a, b) => a + b, 0);
+        const totalExpense = expenseData.reduce((a, b) => a + b, 0);
+        const ctx = document.getElementById('transactionChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Income', 'Expense'],
+                datasets: [{
+                    data: [totalIncome, totalExpense],
+                    backgroundColor: ['#81C784', '#E57373']
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: { color: '#E0E0E0' }
+                    }
+                },
+                cutout: '50%'
+            }
+        });
+    </script>
+</body>
+</html>

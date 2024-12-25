@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Goal - Finance Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+</head>
+<body style="background-color: #333; color: white;">
+    <section class="hero is-dark is-fullheight">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title">Set a New Goal</h1>
+                
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="notification is-{{ messages[0][0] }}" style="max-width: 500px; margin: 1rem auto;">
+                            {{ messages[0][1] }}
+                            <button class="delete"></button>
+                        </div>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+                                (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                                    $delete.addEventListener('click', () => {
+                                        $delete.parentNode.parentNode.removeChild($delete.parentNode);
+                                    });
+                                });
+                            });
+                        </script>
+                    {% endif %}
+                {% endwith %}
+                
+                <div class="box" style="max-width: 500px; margin: 0 auto;">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        <div class="field">
+                            <label class="label">Goal Name</label>
+                            <div class="control">
+                                {{ form.goal_name(class="input", placeholder="Enter goal name") }}
+                            </div>
+                            {% for error in form.goal_name.errors %}
+                                <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="field">
+                            <label class="label">Target Amount</label>
+                            <div class="control">
+                                {{ form.target_amount(class="input", placeholder="Enter target amount") }}
+                            </div>
+                            {% for error in form.target_amount.errors %}
+                                <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="field">
+                            <label class="label">Due Date</label>
+                            <div class="control">
+                                {{ form.due_date(class="input", type="date") }}
+                            </div>
+                            {% for error in form.due_date.errors %}
+                                <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="field">
+                            <button type="submit" class="button is-fullwidth" style="background-color: #000; color: white;">Set Goal</button>
+                        </div>
+                    </form>
+                </div>
+                <a href="{{ url_for('dashboard') }}" class="button is-light" style="margin-top: 1rem;">Back to Dashboard</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Include Bulma JS for interactive components if needed -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/js/bulma.min.js"></script>
+</body>
+</html>

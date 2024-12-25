@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Finance Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+</head>
+<body style="background-color: #333; color: white;">
+    <section class="hero is-black is-fullheight is-flex is-align-items-center">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title" style="color: white;">Register</h1>
+                <div class="box" style="max-width: 500px; margin: 0 auto;">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        <div class="field">
+                            <label class="label" style="color: black;">Username</label>
+                            <div class="control">
+                                {{ form.username(class="input") }}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" style="color: black;">Email</label>
+                            <div class="control">
+                                {{ form.email(class="input") }}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" style="color: black;">Password</label>
+                            <div class="control">
+                                {{ form.password(class="input") }}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" style="color: black;">Confirm Password</label>
+                            <div class="control">
+                                {{ form.confirm_password(class="input") }}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <button type="submit" class="button is-fullwidth" style="background-color: #000; color: white;">Sign Up</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
